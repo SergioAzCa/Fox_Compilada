@@ -1,0 +1,15 @@
+
+{
+  "name": "Fox",
+  "main": "index.html",
+  "window": {
+    "toolbar": false,
+    "width": 800,
+    "height": 600,
+    "frame": true,
+    "dependencies": {
+      "pg": "*"
+  },
+    "kiosk": true // activa modo kiosk 
+  }
+}

@@ -1,0 +1,87 @@
+html{
+	background-color: #000;
+	color: #fff;
+	margin: 0px;
+	padding: 20px 50px;
+	font-family: 'Alegreya Sans', sans-serif;
+}
+.clock2{
+	width: 50%;
+	float: left;
+	font-size: 35px;
+	padding-top: 100px;
+}
+.clock2 ul{
+	list-style-type: none;
+	font-size: 120px;
+	margin: 0px;
+	padding: 0px;
+}
+.clock2 ul li{
+	display: inline;
+}
+.clock2 ul li:first-child{
+	position: relative;
+	left: 30px;
+}
+.clock2 ul li:last-child{
+	position: relative;
+	right: 30px;
+}
+#tiempo{
+	width: 50%;
+	float: left;
+}
+#tiempo .graphic_tiempo{
+	margin-bottom: 15px;
+}
+#tiempo .graphic_tiempo canvas{
+	width: 200px;
+}
+.forecast{
+	width: 200px;
+	float: left;
+	margin-top: 50px;
+}
+.contenedor_datos{
+	height: 200px;
+	margin-bottom: 40px;
+	border-bottom: 1px solid rgba(255,255,255,0.3);
+	padding-bottom: 40px;
+}
+.contenedor_datos .graphic canvas{
+	width: 120px;
+	margin-left: 30px;
+}
+.contCalend{
+	margin: 0px auto 15px auto;
+	width: 110px;
+}
+.contCalend img{
+	position: relative;
+	top: 5px;
+	right: 7px;
+}
+.contenedor_datos div img{
+	position: relative;
+	top: 5px;
+}
+.lineaIconosSup{
+	margin-bottom: 15px !important;
+	height: 30px;
+	width: 190px;
+	margin: 0px auto;
+}
+.lineaIconosInf{
+	width: 145px;
+	margin: 0px auto;
+}
+.contMetro{
+	width: 50%;
+	float: right;
+	margin-top: 50px;
+}
+.contMetro img{
+	position: relative;
+	top: 5px;
+}
