@@ -84,7 +84,7 @@ var config = {
                 fontColor: color(chartColors.white).alpha(1).rgbString(),
                 fontFamily : 'Arial',
                 fontStyle: 'bold',
-                fontSize: 22,
+                fontSize: 26,
                 minFontSize: 1,
                 maxFontSize: 256,
             }
@@ -176,8 +176,6 @@ Chart.pluginService.register({
     },
 })
 
-
-
 window.onload = function() {
     var ctx = document.getElementById("chart-area").getContext("2d");
     window.myDoughnut = new Chart(ctx, config);
@@ -195,7 +193,6 @@ function readTextFile(file)
         {
             if(rawFile.status === 200 || rawFile.status == 0)
             {
-            	  //console.log(rawFile.responseText)
                 allText = rawFile.responseText;
                 return allText;
             }
@@ -219,7 +216,7 @@ function datos_meteo(){
       var resto_humedad = resultado[5];
       var gas = resultado[6];
       var resto_gas = resultado[7];
-      var texto_centro_1 = resultado[8];
+      var texto_centro_1 = round(resultado[8], 2);
       var temperatura_centro = texto_centro_1+'ºC';
       window.myDoughnut.data.datasets[0].data[0]= luz;
       window.myDoughnut.data.datasets[0].data[4]= resto_luz;
@@ -240,4 +237,7 @@ function recarga (){
     datos_meteo();
     recarga();
   },900000); //Set interval para que se refresque cada 15 min
+}
+function round(value, decimals) {
+  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
