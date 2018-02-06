@@ -238,6 +238,7 @@ function recarga (){
     recarga();
   },900000); //Set interval para que se refresque cada 15 min
 }
+
 function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
