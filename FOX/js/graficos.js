@@ -179,7 +179,7 @@ Chart.pluginService.register({
 window.onload = function() {
     var ctx = document.getElementById("chart-area").getContext("2d");
     window.myDoughnut = new Chart(ctx, config);
-    recarga();
+    recarga_grafico();
 };
 
 //////////////AJAX
@@ -232,10 +232,10 @@ function datos_meteo(){
 
 
 ///ACTUALIZACION DE DATOS
-function recarga (){
+function recarga_grafico (){
     var a = setInterval(function(){
     datos_meteo();
-    recarga();
+    recarga_grafico();
   },900000); //Set interval para que se refresque cada 15 min
 }
 

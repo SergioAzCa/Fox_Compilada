@@ -19,7 +19,7 @@ var ultimo_metro =[];
   weatherReport(lat,long);
   //weatherReport(39.573050699999996,-0.32989759999999996); //CUANDO ESTE LA RASPI ACTIVA DESCOMENTAR ARRIBA
   google_calendar();
-  calcularhorario();
+  //calcularhorario();
   recarga();
 
 //----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ function recarga (){
     var f = new Date();
     _hora_actual = f.getHours()+":"+f.getMinutes();
     if ((primer_metro[primer_metro.length-1] < _hora_actual) && (ultimo_metro[ultimo_metro.length-1] > _hora_actual)){
-        calcularhorario();
+      //  calcularhorario();
     }
     clearInterval(a);
     recarga();
@@ -203,132 +203,7 @@ function skycons() {
 
 //----------------------------------------------------------------------------
 ////FUNCION Y VARIABLES PARA METRO VALENCIA
-function calcularhorario() {
-	var horas_siguiente ;
-	var horas_ahora;
-	var hora_metro= [];
-	var f=new Date();
-	var hora=f.getHours()+":"+f.getMinutes();
-	var hora_busqueda=f.getHours()+":";
-	var hora_busqueda_fin=f.getHours();
-	var hora_busqueda_fin_siguiente=f.getHours() + 1;
-	var num_hora = hora.replace(':',',');
-	var horario_metro = [];
-	var texto_horario = "";
 
-	var PDF_URL  = '/home/pi/PDF/metrohorario.pdf';
-	PDFJS.getDocument(PDF_URL).then(function (PDFDocumentInstance) {
-
-	    var totalPages = PDFDocumentInstance.pdfInfo.numPages;
-	    var pageNumber = 1;
-	    //Extrae el texto
-	    getPageText(pageNumber , PDFDocumentInstance).then(function(textPage){
-	    	//Separamos por los guiones
-	        var texto = textPage.split('---')
-	        for (var i=0;i < texto.length;i++){
-	        	if(texto[i] === " "){
-	        	}else {
-	        		texto_bueno.push(texto[i]);
-	        	}
-	        };
-	        for (var i = 0; i < texto_bueno.length;  i++){
-	        	var hora = texto_bueno[i];
-	        	var hora_final = texto_bueno[texto_bueno.length-1];
-	        	var hora_inicio = texto_bueno[2];
-        		var incluye =hora.indexOf(hora_busqueda);
-
-        		var incluye_texto =hora.indexOf("Origen");
-
-        		if (incluye != -1 && incluye_texto == -1){
-        			hora_metro.push(texto_bueno[i]);
-        			var j = i + 1;
-        		}
-        		if (i == j){
-        			hora_metro.push(texto_bueno[i]);
-        		}
-	        }
-			var horas_ahora = hora_metro[0].split(" ");
-			for (var i=0;i< horas_ahora.length;i++){
-				var valor_hora = horas_ahora[i];
-
-				if(valor_hora != "" && valor_hora != hora_busqueda_fin ){
-					var numero = valor_hora.replace(':',',');
-					if ( num_hora  < numero){
-						horario_metro.push(horas_ahora[i]);
-					}
-				}
-			};
-			if (hora_metro.length > 1){
-				var horas_siguiente = hora_metro[1].split(" ");
-				//console.log(horas_siguiente)
-				for (var i=0;i< horas_siguiente.length;i++){
-					var valor_hora = horas_siguiente[i];
-					if(valor_hora != "" && valor_hora != hora_busqueda_fin_siguiente ){
-						var numero = valor_hora.replace(':',',');
-						if ( num_hora  < numero){
-							         horario_metro.push(horas_siguiente[i]);
-						}
-					}
-				};
-			};
-			for (var i=0; i < horario_metro.length;i++){
-				texto_horario = texto_horario +" "+horario_metro[i];
-				//console.log("HORA "+num_hora+" TEXTO "+texto_horario)
-			}
-			//Obtener el último metro disponible
-			var hora_comparar =f.getHours()+"."+f.getMinutes();
-			var hora_final = hora_final.split(" ");
-			var hora_final_horas = [];
-			for(var i = 0;i< hora_final.length;i++){
-				if (hora_final[i] != ""){
-					hora_final_horas.push(hora_final[i])
-				}
-			};
-			//Obtener el primer metro del día
-			var hora_inicio = hora_inicio.split(" ");
-			var hora_inicio_horas = [];
-			for(var i = 0;i< hora_inicio.length;i++){
-				if (hora_inicio[i] != ""){
-					hora_inicio_horas.push(hora_inicio[i])
-				}
-			};
-			var hora_inicio_buena = hora_inicio[2];
-			var hora_final = hora_final_horas[hora_final_horas.length-1];
-			var hora_final_verdad = hora_final.replace(':','.');
-			//console.log("HORA REAL : "+hora_comparar+" | HORA ULTIMO METRO : "+hora_final_verdad)
-			if (hora_comparar > hora_final_verdad || (hora_comparar == 01 || hora_comparar == 02 || hora_comparar == 03 || hora_comparar == 04 || hora_comparar == 05 || hora_comparar == 00) || incluye_texto == true){
-				$("#metro").html(
-					"<div '><img style='right=100px;' src='svg/train-travelling-on-railroad.svg' height='30'/> Ya no hay metros disponibles hasta las " + hora_inicio_buena + "</div>"
-				);
-        ultimo_metro.append(hora_final_verdad);
-        primer_metro.append(hora_inicio_buena);
-			}else {
-				$("#metro").html(
-					"<div '><img style='right=100px;' src='svg/train-travelling-on-railroad.svg' height='30'/> Horario : " + texto_horario + "</div>"
-				);};
-	     });
-	}, function (reason) {
-	    console.error(reason);
-	})
-
-return texto_horario;
-}
-
-function getPageText(pageNum, PDFDocumentInstance) {
-    return new Promise(function (resolve, reject) {
-        PDFDocumentInstance.getPage(pageNum).then(function (pdfPage) {
-            pdfPage.getTextContent().then(function (textContent) {
-                var textItems = textContent.items;
-                var finalString = "";
-                for (var i = 0; i < textItems.length; i++) {
-                    var item = textItems[i];
-                    finalString += item.str + " ";
-                }
-                resolve(finalString);
-            });
-        });
-    });
-}
 
 //----------------------------------------------------------------------------
 
