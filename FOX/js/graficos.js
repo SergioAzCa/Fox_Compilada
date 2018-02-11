@@ -236,7 +236,7 @@ function recarga_grafico (){
     var a = setInterval(function(){
     datos_meteo();
     recarga_grafico();
-  },900000); //Set interval para que se refresque cada 15 min
+  },300000); //Set interval para que se refresque cada 15 min
 }
 
 function round(value, decimals) {

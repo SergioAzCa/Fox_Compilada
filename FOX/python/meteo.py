@@ -7,8 +7,8 @@ import numpy as np
 import psycopg2
 
 
-connection = psycopg2.connect( host ='192.168.1.37', database='datos', user='pi', password='postgres')
-#Buscamos el día para la descarga de los horarios
+connection = psycopg2.connect( host ='192.168.1.37', database='datos', user='postgres', password='postgres')
+#Obtenemos los datos 
 cursor = connection.cursor()
 cursor.execute('SELECT luz FROM datos_meteo.datos ORDER BY id desc;')
 luz = cursor.fetchone()[0]

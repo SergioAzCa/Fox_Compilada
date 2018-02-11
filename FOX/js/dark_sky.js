@@ -58,11 +58,6 @@ function recarga (){
   var a = setInterval(function(){
     google_calendar();
     weatherReport(lat,long);
-    var f = new Date();
-    _hora_actual = f.getHours()+":"+f.getMinutes();
-    if ((primer_metro[primer_metro.length-1] < _hora_actual) && (ultimo_metro[ultimo_metro.length-1] > _hora_actual)){
-      //  calcularhorario();
-    }
     clearInterval(a);
     recarga();
     //weatherReport(39.573050699999996,-0.32989759999999996);
@@ -97,24 +92,25 @@ function weatherReport(lat,long) {
 				var nubes = forecast.currently.cloudCover * 100;
 				var uv = 	forecast.currently.uvIndex;
 				var visibilidad = forecast.currently.visibility;
-				var ozono = forecast.currently.ozone;
+				//var ozono = forecast.currently.ozone;
 				var probabilidad_lluvia= Math.round(forecast.currently.precipProbability * 100,1);
 				var presion = forecast.currently.pressure;
 
 		$("#tiempo").html(
 					'<div class="shade-'+ skicons +'"><div class="card-container"><div><div class="front card"></div>' +
 					"<div class='graphic_tiempo'><canvas class=" + skicons + "></canvas></div>" +
-					"<div><b>Prob. Lluvia</b>: " + probabilidad_lluvia + "%</div>" +
-					"<div><b>Temperatura</b>: " + temp + "</div>" +
-					"<div><b>Temperatura aparente</b>: " + aparente_temp + "</div>" +
-					"<div><b>Humedad</b>: " + humidity + "%</div>" +
-					"<div><b>Rocio</b>: " + rocio + "</div>" +
-					"<div><b>Viento</b>: " + viento + " Km/h</div>" +
-					"<div><b>Nubes</b>: " + nubes + "%</div>" +
-					"<div><b>Presión</b>: " + presion + " Hectopascals</div>" +
-					"<div><b>índice UV</b>: " + uv + "</div>" +
-					"<div><b>Visibilidad</b>: " + visibilidad + " Km</div>" +
-					"<div><b>Ozono</b>: " + ozono + "</div>" +
+          "<div id='temp' style='float:left;margin-left:5px;' ><img src='./svg/thermometer_generico.svg' height='30'/> "  + temp + "</div>" +
+					"<div id='probabilidad_lluvia_current'><img src='./svg/rain.svg' height='30'/>  "  + probabilidad_lluvia + "%</div>" +
+					"<div id='aparente_temp'><b>Temperatura aparente</b>: " + aparente_temp + "</div>" +
+					"<div id='humidity_current' style='float:left;margin-left:5px;'><img src='./svg/humidity.svg' height='30'/> " + humidity + "%</div>" +
+          "<div id='viento_current' ><img src='./svg/windy.svg' height='30'/>  "  + viento + " Km/h</div>" +
+          "<div><b>------Datos adicionales------</b></div>" +
+					"<div id='rocio_current'><b>Rocio</b>: " + rocio + "</div>" +
+					"<div id='nubes_current' style='float:left;margin-left:5px;'><img src='./svg/cloud_azul.svg' height='30'/> " + nubes + "%</div>" +
+	        "<div id='uv_current' ><img src='./svg/sunblock.svg' height='30'/> " + uv + "</div>" +
+          "<div id='presion_current' ><img src='./svg/meter.svg' height='30'/> " + presion + " Hectopascals</div>" +
+					"<div id='visibilidad_current'><b>Visibilidad</b>: " + visibilidad + " Km</div>" +
+					//"<div><b>Ozono</b>: " + ozono + "</div>" +
 					'</div></div><div class="back card">'
 		);
 		// Bucle para los días
@@ -135,22 +131,106 @@ function weatherReport(lat,long) {
 
 
   		$(forecast_valor[i-1]).html(
-  			  "<div class='contenedor_datos'>"+
+  			  "<div  class='contenedor_datos'>"+
   				'<div class="shade-'+ skicons +'">' +
   				"<div class='contCalend'><img src='svg/calendar.svg' height='30'/>  " + date.toLocaleDateString() + "</div>" +
   				"<div class='graphic'><canvas class=" + skicons + "></canvas></div>" +
           "<div class='lineaIconosSup'>"+
-  				"<div style='float:left;margin-left:5px;'><img src='svg/temperature_cold.svg' height='30'/> " + tempMin + "</div>" +
-  				"<div style='float:left;margin-left:5px;'><img src='svg/temperature_hot.svg' height='30'/>  " + tempMax + "</div>" +
-  				"<div style='float:left;margin-left:5px;'><img src='svg/humidity.svg' height='30'/> " + humidity + "%</div>" +
+  				"<div id = 'tempMin"i-1"' style='float:left;margin-left:5px;'><img src='svg/temperature_cold.svg' height='30'/> " + tempMin + "</div>" +
+  				"<div id = 'tempMax"i-1"' style='float:left;margin-left:5px;'><img src='svg/temperature_hot.svg' height='30'/>  " + tempMax + "</div>" +
+  				"<div id = 'humidity"i-1"' style='float:left;margin-left:5px;'><img src='svg/humidity.svg' height='30'/> " + humidity + "%</div>" +
   				"</div>"+
   				"<div class='lineaIconosInf'>"+
-  				"<div style='float:left;margin-left:5px;'><img src='svg/rain.svg' height='30'/>  " + probabilidad_lluvia + "%</div>" +
-  				"<div style='float:left;margin-left:5px;'><img src='svg/windy.svg' height='30'/>  " + wind + "Km/h</div>" +
+  				"<div id = 'probabilidad_lluvia"i-1"' style='float:left;margin-left:5px;'><img src='svg/rain.svg' height='30'/>  " + probabilidad_lluvia + "%</div>" +
+  				"<div id = 'wind"i-1"' style='float:left;margin-left:5px;'><img src='svg/windy.svg' height='30'/>  " + wind + "Km/h</div>" +
   				"</div>"+
   				"</div>"+
   				'</div></div><div class="back card">'
   		);
+		}
+		skycons(); //Añadimos los iconos
+	});
+}
+
+
+function weatherReport_carga(lat,long) {
+
+	var apiKey       = '328d9ebcd87e9efeb1df8eaecc146730',
+			url          = 'https://api.darksky.net/forecast/',
+			lati         = lat,
+			longi        = long,
+			api_call     = url + apiKey + "/" + lat + "," + long+ "?lang=es&units=si&extend=hourly&callback=?";
+			//console.log(api_call);
+	// Hold our days of the week for reference later.
+	var days = [];
+	// Call to the DarkSky API to retrieve JSON
+	$.getJSON(api_call, function(forecast) {
+		//DIA ACTUAL
+			  var date     = new Date(forecast.currently.time * 1000);
+				var abreviatura = forecast.currently.summary;
+				var skicons     = forecast.currently.icon;
+				var tiempo     = forecast.currently.time;
+				var viento     = Math.round((forecast.currently.windSpeed) * 3.6,1);
+				var humidity = Math.round(forecast.currently.humidity * 100,1);
+				var summary  = forecast.currently.summary;
+				var temp    = forecast.currently.temperature;
+				var aparente_temp = forecast.currently.apparentTemperature;
+				var rocio = forecast.currently.dewPoint;
+				var nubes = forecast.currently.cloudCover * 100;
+				var uv = 	forecast.currently.uvIndex;
+				var visibilidad = forecast.currently.visibility;
+				//var ozono = forecast.currently.ozone;
+				var probabilidad_lluvia= Math.round(forecast.currently.precipProbability * 100,1);
+				var presion = forecast.currently.pressure;
+
+        var shade_current = "shade-"+skicons;
+        $("#shade_current").removeClass(shade_current);
+        $("#shade_current").addClass(shade_current);
+        $("#icon_curent").removeClass(skicons);
+        $("#icon_curent").addClass(skicons);
+        $("#temp").value(temp);
+        $("#probabilidad_lluvia_current").value(probabilidad_lluvia);
+        $("#aparente_temp").value(aparente_temp);
+        $("#humidity_current").value(humidity);
+        $("#viento_current").value(viento);
+        $("#rocio_current").value(rocio);
+        $("#nubes_current").value(nubes);
+        $("#uv_current").value(uv);
+        $("#presion_current").value(presion);
+        $("#visibilidad_current").value(visibilidad);
+		// Bucle para los días
+		for(var i = 1, l = forecast.daily.data.length; i < l - 1; i++) {
+
+			    var date     = new Date(forecast.daily.data[i].time * 1000);
+					var day      = days[date.getDay()];
+					var skicons  = forecast.daily.data[i].icon;
+					var time     = forecast.daily.data[i].time;
+					var wind     = Math.round((forecast.daily.data[i].windSpeed)*3.6,1);
+					var humidity = Math.round(forecast.daily.data[i].humidity * 100,1);
+					var summary  = forecast.daily.data[i].summary;
+	        var probabilidad_lluvia  = Math.round(forecast.daily.data[i].precipProbability * 100,1);
+					//temp    = Math.round(forecast.hourly.data[i].temperature),
+					var tempMin = Math.round(forecast.daily.data[i].temperatureLow);
+					var tempMax = Math.round(forecast.daily.data[i].temperatureMax);
+          var forecast_valor = ["#forecast1","#forecast2","#forecast3","#forecast4","#forecast5","#forecast6"];
+
+          var shade_current = "shade-"+skicons;
+          $("#shade_current").removeClass(shade_current);
+          $("#shade_current").addClass(shade_current);
+          $("#icon").removeClass(skicons);
+          $("#icon_curent").addClass(skicons);
+          $("#temp").value(temp);
+          $("#probabilidad_lluvia_current").value(probabilidad_lluvia);
+          $("#aparente_temp").value(aparente_temp);
+          $("#humidity_current").value(humidity);
+          $("#viento_current").value(viento);
+          $("#rocio_current").value(rocio);
+          $("#nubes_current").value(nubes);
+          $("#uv_current").value(uv);
+          $("#presion_current").value(presion);
+          $("#visibilidad_current").value(visibilidad);
+
+
 		}
 		skycons(); //Añadimos los iconos
 	});
