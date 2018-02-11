@@ -10,7 +10,7 @@ function calcularhorario() {
 	var hora_metro= [];
 	var f=new Date();
 	var hora_actual=f.getHours()+"."+f.getMinutes();
-	var hora_siguiente=(f.getHours()+1)+"."+f.getMinutes();
+	var hora_siguiente=(f.getHours()+2)+"."+f.getMinutes();
 	console.log(hora_siguiente)
 	var hora_comparar =0+f.getHours();
 	var hora_busqueda=f.getHours()+":";
@@ -29,14 +29,14 @@ function calcularhorario() {
 			}
 	for (var a=0;a< horas_horario.length;a++){
 			var numero = horas_horario[a].replace(':','.');
-			if ( parseFloat(hora_actual)  < parseFloat(numero) || parseFloat(hora_siguiente) < parseFloat(numero) ){
+			if ( parseFloat(hora_actual)  < parseFloat(numero) && parseFloat(hora_siguiente) > parseFloat(numero) ){
 				texto_horario = texto_horario +' '+numero
 				//console.log(texto_horario)
 			}
 	}
 	}
 
-	if (hora_comparar > hora_final || (hora_comparar == 01 || hora_comparar == 02 || hora_comparar == 03 || hora_comparar == 04 || hora_comparar == 05 || hora_comparar == 00)){
+	if (hora_actual > hora_final){
 		$("#metro").html(
 			"<div '><img style='right=100px;' src='svg/train-travelling-on-railroad.svg' height='30'/> Ya no hay metros disponibles hasta las " + hora_inicio_buena + "</div>"
 		);
@@ -71,5 +71,5 @@ function recarga_metro (){
     var a = setInterval(function(){
     calcularhorario();
     recarga_metro();
-  },900000); //Set interval para que se refresque cada 15 min
+  },90000); //Set interval para que se refresque cada 15 min
 }
