@@ -11,7 +11,6 @@ function calcularhorario() {
 	var f=new Date();
 	var hora_actual=f.getHours()+"."+f.getMinutes();
 	var hora_siguiente=(f.getHours()+2)+"."+f.getMinutes();
-	console.log(hora_siguiente)
 	var hora_comparar =0+f.getHours();
 	var hora_busqueda=f.getHours()+":";
 	var hora_busqueda_fin_siguiente=f.getHours() + 1;
@@ -23,17 +22,17 @@ function calcularhorario() {
 	var hora_final = resultado[texto_bueno.length-1];
 	var hora_inicio_buena = resultado[0];
 	for (var i=0;i< resultado.length;i++){
-			var valor_hora = resultado[i];
-			if(valor_hora != ""){
-				var horas_horario = valor_hora.split(' ');
-			}
-	for (var a=0;a< horas_horario.length;a++){
-			var numero = horas_horario[a].replace(':','.');
-			if ( parseFloat(hora_actual)  < parseFloat(numero) && parseFloat(hora_siguiente) > parseFloat(numero) ){
-				texto_horario = texto_horario +' '+numero
-				//console.log(texto_horario)
-			}
-	}
+				var valor_hora = resultado[i];
+				if(valor_hora != ""){
+					var horas_horario = valor_hora.split(' ');
+				}
+				for (var a=0;a< horas_horario.length;a++){
+						var numero = horas_horario[a].replace(':','.');
+						if ( parseFloat(hora_actual)  < parseFloat(numero) && parseFloat(hora_siguiente) > parseFloat(numero) ){
+							texto_horario = texto_horario +' '+numero
+							//console.log(texto_horario)
+						}
+				}
 	}
 
 	if (hora_actual > hora_final){
