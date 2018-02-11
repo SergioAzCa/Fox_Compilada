@@ -84,7 +84,7 @@ function weatherReport(lat,long) {
 			lati         = lat,
 			longi        = long,
 			api_call     = url + apiKey + "/" + lat + "," + long+ "?lang=es&units=si&extend=hourly&callback=?";
-			console.log(api_call);
+			//console.log(api_call);
 	// Hold our days of the week for reference later.
 	var days = [];
 	// Call to the DarkSky API to retrieve JSON
