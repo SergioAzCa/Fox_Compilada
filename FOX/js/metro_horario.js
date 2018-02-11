@@ -19,30 +19,41 @@ function calcularhorario() {
   var b = 0;
 	var response = readTextFile('/home/pi/python/metro_horario.txt');
 	var resultado = response.split('&');
-	var hora_final = resultado[texto_bueno.length-1];
+	var hora_final = resultado[resultado.length-2];
+	var separacion = hora_final.length;
+	if (separacion > 6){
+			var horario_separado_final=hora_final.split(' ');
+			var horario_final_bueno = horario_separado_final[horario_separado_final.length-1];
+			var hora_final_comparador = horario_final_bueno.replace(':','.');
+	}else {
+		  var hora_final_comparador = hora_final.replace(':','.');
+	}
 	var hora_inicio_buena = resultado[0];
 	for (var i=0;i< resultado.length;i++){
 				var valor_hora = resultado[i];
 				if(valor_hora != ""){
 					var horas_horario = valor_hora.split(' ');
-				}
+				};
 				for (var a=0;a< horas_horario.length;a++){
 						var numero = horas_horario[a].replace(':','.');
 						if ( parseFloat(hora_actual)  < parseFloat(numero) && parseFloat(hora_siguiente) > parseFloat(numero) ){
 							texto_horario = texto_horario +' '+numero
 							//console.log(texto_horario)
-						}
-				}
-	}
+						};
+				};
+	};
 
-	if (hora_actual > hora_final){
-		$("#metro").html(
-			"<div '><img style='right=100px;' src='svg/train-travelling-on-railroad.svg' height='30'/> Ya no hay metros disponibles hasta las " + hora_inicio_buena + "</div>"
-		);
-	}else {
-		$("#metro").html(
-			"<div '><img style='right=100px;' src='svg/train-travelling-on-railroad.svg' height='30'/> Horario : " + texto_horario + "</div>"
-		);};
+	if (parseFloat(hora_actual) > parseFloat(hora_final_comparador)){
+					$("#metro").html(
+						"<div '><img style='right=100px;' src='svg/train-travelling-on-railroad.svg' height='30'/> Ya no hay metros disponibles hasta las " + hora_inicio_buena + "</div>"
+					);
+	   }else {
+				$("#metro").html(
+					"<div '><img style='right=100px;' src='svg/train-travelling-on-railroad.svg' height='30'/> Horario : " + texto_horario + "</div>"
+				);
+		};
+
+
 };
 
 
@@ -70,5 +81,5 @@ function recarga_metro (){
     var a = setInterval(function(){
     calcularhorario();
     recarga_metro();
-  },90000); //Set interval para que se refresque cada 15 min
+  },900000); //Set interval para que se refresque cada 15 min
 }

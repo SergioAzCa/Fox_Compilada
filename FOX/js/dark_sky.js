@@ -1,14 +1,8 @@
 
 //Variables globales
-var hora_metro = [];
-var hora_metro_prox = ['Proxima hora'];
-var texto_bueno = ['Horario Metro']
-var datos_horario = "Horario :";
 var lat ;
 var long;
 var allText;
-var primer_metro = [];
-var ultimo_metro =[];
 //METRO VALENCIA
 // LAT LONG : 39.573050699999996 -0.32989759999999996
 
@@ -55,7 +49,7 @@ setInterval( function() {
 	var hours = new Date().getHours();
 	// Add a leading zero to the hours value
 	$("#hours").html(( hours < 10 ? "0" : "" ) + hours);
-}, 900000);
+}, 1000);
 });
 
 //----------------------------------------------------------------------------
@@ -195,17 +189,6 @@ function skycons() {
     // animate the icons
     icons.play();
 }
-
-//----------------------------------------------------------------------------
-
-
-
-
-//----------------------------------------------------------------------------
-////FUNCION Y VARIABLES PARA METRO VALENCIA
-
-
-//----------------------------------------------------------------------------
 
 //////////////////////GOOGLE CALENDAR
 

@@ -84,7 +84,7 @@ var config = {
                 fontColor: color(chartColors.white).alpha(1).rgbString(),
                 fontFamily : 'Arial',
                 fontStyle: 'bold',
-                fontSize: 26,
+                fontSize: 20,
                 minFontSize: 1,
                 maxFontSize: 256,
             }
