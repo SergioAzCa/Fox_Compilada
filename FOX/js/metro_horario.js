@@ -81,5 +81,6 @@ function recarga_metro (){
     var a = setInterval(function(){
     calcularhorario();
     recarga_metro();
+
   },700000); //Set interval para que se refresque cada 15 min
 }
