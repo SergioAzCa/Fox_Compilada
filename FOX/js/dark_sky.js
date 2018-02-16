@@ -9,6 +9,7 @@ var allText;
 //PETICION PDF
 //http://www.metrovalencia.es/horarios_pdf.php?origen=3&destino=11&fecha=12/11/2017&hini=00:00&hfin=23:59
 
+
  lat,long= lat_long();
   weatherReport(lat,long);
   //weatherReport(39.573050699999996,-0.32989759999999996); //CUANDO ESTE LA RASPI ACTIVA DESCOMENTAR ARRIBA
@@ -19,37 +20,37 @@ var allText;
 //----------------------------------------------------------------------------
 //RELOJ DIGITAL
 $(document).ready(function() {
-// Create two variable with the names of the months and days in an array
-var monthNames = [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
-var dayNames= ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"]
+  // Create two variable with the names of the months and days in an array
+  var monthNames = [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
+  var dayNames= ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"]
 
-// Create a newDate() object
-var newDate = new Date();
-// Extract the current date from Date object
-newDate.setDate(newDate.getDate());
-// Output the day, date, month and year
-$('#Date').html(dayNames[newDate.getDay()] + " " + newDate.getDate() + ' ' + monthNames[newDate.getMonth()] + ' ' + newDate.getFullYear());
+  // Create a newDate() object
+  var newDate = new Date();
+  // Extract the current date from Date object
+  newDate.setDate(newDate.getDate());
+  // Output the day, date, month and year
+  $('#Date').html(dayNames[newDate.getDay()] + " " + newDate.getDate() + ' ' + monthNames[newDate.getMonth()] + ' ' + newDate.getFullYear());
 
-setInterval( function() {
-	// Create a newDate() object and extract the seconds of the current time on the visitor's
-	var seconds = new Date().getSeconds();
-	// Add a leading zero to seconds value
-	$("#sec").html(( seconds < 10 ? "0" : "" ) + seconds);
-	},1000);
+  setInterval( function() {
+  	// Create a newDate() object and extract the seconds of the current time on the visitor's
+  	var seconds = new Date().getSeconds();
+  	// Add a leading zero to seconds value
+  	$("#sec").html(( seconds < 10 ? "0" : "" ) + seconds);
+  	},1000);
 
-setInterval( function() {
-	// Create a newDate() object and extract the minutes of the current time on the visitor's
-	var minutes = new Date().getMinutes();
-	// Add a leading zero to the minutes value
-	$("#min").html(( minutes < 10 ? "0" : "" ) + minutes);
-    },1000);
+  setInterval( function() {
+  	// Create a newDate() object and extract the minutes of the current time on the visitor's
+  	var minutes = new Date().getMinutes();
+  	// Add a leading zero to the minutes value
+  	$("#min").html(( minutes < 10 ? "0" : "" ) + minutes);
+      },1000);
 
-setInterval( function() {
-	// Create a newDate() object and extract the hours of the current time on the visitor's
-	var hours = new Date().getHours();
-	// Add a leading zero to the hours value
-	$("#hours").html(( hours < 10 ? "0" : "" ) + hours);
-}, 1000);
+  setInterval( function() {
+  	// Create a newDate() object and extract the hours of the current time on the visitor's
+  	var hours = new Date().getHours();
+  	// Add a leading zero to the hours value
+  	$("#hours").html(( hours < 10 ? "0" : "" ) + hours);
+  }, 1000);
 });
 
 //----------------------------------------------------------------------------
@@ -72,13 +73,14 @@ function weatherReport(lat,long) {
 			url          = 'https://api.darksky.net/forecast/',
 			lati         = lat,
 			longi        = long,
-			api_call     = url + apiKey + "/" + lat + "," + long+ "?lang=es&units=si&extend=hourly&callback=?";
+			api_call     = url + apiKey + "/" + lat + "," + long+ "?lang=es&units=si&exclude=minutely,hourly,alerts,flags&callback=?";
 			//console.log(api_call);
 	// Hold our days of the week for reference later.
 	var days = [];
 	// Call to the DarkSky API to retrieve JSON
 	$.getJSON(api_call, function(forecast) {
 		//DIA ACTUAL
+
 			  var date     = new Date(forecast.currently.time * 1000);
 				var abreviatura = forecast.currently.summary;
 				var skicons     = forecast.currently.icon;
@@ -99,17 +101,17 @@ function weatherReport(lat,long) {
 		$("#tiempo").html(
 					'<div class="shade-'+ skicons +'"><div class="card-container"><div><div class="front card"></div>' +
 					"<div class='graphic_tiempo'><canvas class=" + skicons + "></canvas></div>" +
-          "<div id='temp' style='float:left;margin-left:5px;' ><img src='./svg/thermometer_generico.svg' height='30'/> "  + temp + "</div>" +
-					"<div id='probabilidad_lluvia_current'><img src='./svg/rain.svg' height='30'/>  "  + probabilidad_lluvia + "%</div>" +
-					"<div id='aparente_temp'><b>Temperatura aparente</b>: " + aparente_temp + "</div>" +
-					"<div id='humidity_current' style='float:left;margin-left:5px;'><img src='./svg/humidity.svg' height='30'/> " + humidity + "%</div>" +
-          "<div id='viento_current' ><img src='./svg/windy.svg' height='30'/>  "  + viento + " Km/h</div>" +
+          "<div style='float:left;margin-left:5px;' ><img src='./svg/thermometer_generico.svg' height='30'/> "  + temp + "</div>" +
+					"<div ><img src='./svg/rain.svg' height='30'/>  "  + probabilidad_lluvia + "%</div>" +
+					"<div ><b>Temperatura aparente</b>: " + aparente_temp + "</div>" +
+					"<div style='float:left;margin-left:5px;'><img src='./svg/humidity.svg' height='30'/> " + humidity + "%</div>" +
+          "<div ><img src='./svg/windy.svg' height='30'/>  "  + viento + " Km/h</div>" +
           "<div><b>------Datos adicionales------</b></div>" +
-					"<div id='rocio_current'><b>Rocio</b>: " + rocio + "</div>" +
-					"<div id='nubes_current' style='float:left;margin-left:5px;'><img src='./svg/cloud_azul.svg' height='30'/> " + nubes + "%</div>" +
-	        "<div id='uv_current' ><img src='./svg/sunblock.svg' height='30'/> " + uv + "</div>" +
-          "<div id='presion_current' ><img src='./svg/meter.svg' height='30'/> " + presion + " Hectopascals</div>" +
-					"<div id='visibilidad_current'><b>Visibilidad</b>: " + visibilidad + " Km</div>" +
+					"<div ><b>Rocio</b>: " + rocio + "</div>" +
+					"<div style='float:left;margin-left:5px;'><img src='./svg/cloud_azul.svg' height='30'/> " + nubes + "%</div>" +
+	        "<div><img src='./svg/sunblock.svg' height='30'/> " + uv + "</div>" +
+          "<div ><img src='./svg/meter.svg' height='30'/> " + presion + " Hectopascals</div>" +
+					"<div ><b>Visibilidad</b>: " + visibilidad + " Km</div>" +
 					//"<div><b>Ozono</b>: " + ozono + "</div>" +
 					'</div></div><div class="back card">'
 		);
@@ -132,118 +134,34 @@ function weatherReport(lat,long) {
 
   		$(forecast_valor[i-1]).html(
   			  "<div  class='contenedor_datos'>"+
-  				'<div class="shade-'+ skicons +'">' +
+  				'<div  class="shade-'+ skicons +'">' +
   				"<div class='contCalend'><img src='svg/calendar.svg' height='30'/>  " + date.toLocaleDateString() + "</div>" +
   				"<div class='graphic'><canvas class=" + skicons + "></canvas></div>" +
           "<div class='lineaIconosSup'>"+
-  				"<div id = 'tempMin"i-1"' style='float:left;margin-left:5px;'><img src='svg/temperature_cold.svg' height='30'/> " + tempMin + "</div>" +
-  				"<div id = 'tempMax"i-1"' style='float:left;margin-left:5px;'><img src='svg/temperature_hot.svg' height='30'/>  " + tempMax + "</div>" +
-  				"<div id = 'humidity"i-1"' style='float:left;margin-left:5px;'><img src='svg/humidity.svg' height='30'/> " + humidity + "%</div>" +
+  				"<div style='float:left;margin-left:5px;'><img src='svg/temperature_cold.svg' height='30'/> " + tempMin + "</div>" +
+  				"<div  style='float:left;margin-left:5px;'><img src='svg/temperature_hot.svg' height='30'/>  " + tempMax + "</div>" +
+  				"<div style='float:left;margin-left:5px;'><img src='svg/humidity.svg' height='30'/> " + humidity + "%</div>" +
   				"</div>"+
   				"<div class='lineaIconosInf'>"+
-  				"<div id = 'probabilidad_lluvia"i-1"' style='float:left;margin-left:5px;'><img src='svg/rain.svg' height='30'/>  " + probabilidad_lluvia + "%</div>" +
-  				"<div id = 'wind"i-1"' style='float:left;margin-left:5px;'><img src='svg/windy.svg' height='30'/>  " + wind + "Km/h</div>" +
+  				"<div  style='float:left;margin-left:5px;'><img src='svg/rain.svg' height='30'/>  " + probabilidad_lluvia + "%</div>" +
+  				"<div style='float:left;margin-left:5px;'><img src='svg/windy.svg' height='30'/>  " + wind + "Km/h</div>" +
   				"</div>"+
   				"</div>"+
   				'</div></div><div class="back card">'
   		);
 		}
-		skycons(); //Añadimos los iconos
-	});
-}
-
-
-function weatherReport_carga(lat,long) {
-
-	var apiKey       = '328d9ebcd87e9efeb1df8eaecc146730',
-			url          = 'https://api.darksky.net/forecast/',
-			lati         = lat,
-			longi        = long,
-			api_call     = url + apiKey + "/" + lat + "," + long+ "?lang=es&units=si&extend=hourly&callback=?";
-			//console.log(api_call);
-	// Hold our days of the week for reference later.
-	var days = [];
-	// Call to the DarkSky API to retrieve JSON
-	$.getJSON(api_call, function(forecast) {
-		//DIA ACTUAL
-			  var date     = new Date(forecast.currently.time * 1000);
-				var abreviatura = forecast.currently.summary;
-				var skicons     = forecast.currently.icon;
-				var tiempo     = forecast.currently.time;
-				var viento     = Math.round((forecast.currently.windSpeed) * 3.6,1);
-				var humidity = Math.round(forecast.currently.humidity * 100,1);
-				var summary  = forecast.currently.summary;
-				var temp    = forecast.currently.temperature;
-				var aparente_temp = forecast.currently.apparentTemperature;
-				var rocio = forecast.currently.dewPoint;
-				var nubes = forecast.currently.cloudCover * 100;
-				var uv = 	forecast.currently.uvIndex;
-				var visibilidad = forecast.currently.visibility;
-				//var ozono = forecast.currently.ozone;
-				var probabilidad_lluvia= Math.round(forecast.currently.precipProbability * 100,1);
-				var presion = forecast.currently.pressure;
-
-        var shade_current = "shade-"+skicons;
-        $("#shade_current").removeClass(shade_current);
-        $("#shade_current").addClass(shade_current);
-        $("#icon_curent").removeClass(skicons);
-        $("#icon_curent").addClass(skicons);
-        $("#temp").value(temp);
-        $("#probabilidad_lluvia_current").value(probabilidad_lluvia);
-        $("#aparente_temp").value(aparente_temp);
-        $("#humidity_current").value(humidity);
-        $("#viento_current").value(viento);
-        $("#rocio_current").value(rocio);
-        $("#nubes_current").value(nubes);
-        $("#uv_current").value(uv);
-        $("#presion_current").value(presion);
-        $("#visibilidad_current").value(visibilidad);
-		// Bucle para los días
-		for(var i = 1, l = forecast.daily.data.length; i < l - 1; i++) {
-
-			    var date     = new Date(forecast.daily.data[i].time * 1000);
-					var day      = days[date.getDay()];
-					var skicons  = forecast.daily.data[i].icon;
-					var time     = forecast.daily.data[i].time;
-					var wind     = Math.round((forecast.daily.data[i].windSpeed)*3.6,1);
-					var humidity = Math.round(forecast.daily.data[i].humidity * 100,1);
-					var summary  = forecast.daily.data[i].summary;
-	        var probabilidad_lluvia  = Math.round(forecast.daily.data[i].precipProbability * 100,1);
-					//temp    = Math.round(forecast.hourly.data[i].temperature),
-					var tempMin = Math.round(forecast.daily.data[i].temperatureLow);
-					var tempMax = Math.round(forecast.daily.data[i].temperatureMax);
-          var forecast_valor = ["#forecast1","#forecast2","#forecast3","#forecast4","#forecast5","#forecast6"];
-
-          var shade_current = "shade-"+skicons;
-          $("#shade_current").removeClass(shade_current);
-          $("#shade_current").addClass(shade_current);
-          $("#icon").removeClass(skicons);
-          $("#icon_curent").addClass(skicons);
-          $("#temp").value(temp);
-          $("#probabilidad_lluvia_current").value(probabilidad_lluvia);
-          $("#aparente_temp").value(aparente_temp);
-          $("#humidity_current").value(humidity);
-          $("#viento_current").value(viento);
-          $("#rocio_current").value(rocio);
-          $("#nubes_current").value(nubes);
-          $("#uv_current").value(uv);
-          $("#presion_current").value(presion);
-          $("#visibilidad_current").value(visibilidad);
-
-
-		}
-		skycons(); //Añadimos los iconos
+    skycons(); //Añadimos los iconos
 	});
 }
 
 function skycons() {
-        var i,
-            icons = new Skycons({
-               //"color" : "#190f707",
-               "color" : "#FFFFFF",
-                "resizeClear": true // nasty android hack
-            }),
-            list  = [ // listing of all possible icons
+        var  icons = new Skycons({
+        //"color" : "#190f707",
+         "color" : "#FFFFFF"
+
+       });
+        var i;
+        var  list  = [ // listing of all possible icons
                 "clear-day",
                 "clear-night",
                 "partly-cloudy-day",
@@ -255,20 +173,19 @@ function skycons() {
                 "wind",
                 "fog"
             ];
-    // loop thru icon list array
     for(i = list.length; i--;) {
-        var weatherType = list[i], // select each icon from list array
-                // icons will have the name in the array above attached to the
-                // canvas element as a class so let's hook into them.
+        var weatherType = list[i],
                 elements    = document.getElementsByClassName( weatherType );
-        // loop thru the elements now and set them up
         for (e = elements.length; e--;) {
             icons.set(elements[e], weatherType);
         }
     }
-    // animate the icons
-    icons.play();
+
+    icons.play();  // animate the icons
+
 }
+
+
 
 //////////////////////GOOGLE CALENDAR
 
