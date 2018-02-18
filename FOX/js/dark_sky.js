@@ -11,7 +11,7 @@ var allText;
 
 
  lat,long= lat_long();
-  weatherReport(lat,long);
+  weatherReport(lat,long,1);
   //weatherReport(39.573050699999996,-0.32989759999999996); //CUANDO ESTE LA RASPI ACTIVA DESCOMENTAR ARRIBA
   google_calendar();
   //calcularhorario();
@@ -52,14 +52,19 @@ $(document).ready(function() {
   	$("#hours").html(( hours < 10 ? "0" : "" ) + hours);
   }, 1000);
 });
-
+var contador = 0;
 //----------------------------------------------------------------------------
 //FUNCION MEMORIA LIBERADA
 function recarga (){
   var a = setInterval(function(){
     google_calendar();
-    weatherReport(lat,long);
+    if(contador % 2 == 0){
+        weatherReport(lat,long,1);
+    }else{
+        weatherReport(lat,long,0);
+    }
     clearInterval(a);
+    contador = contador + 1;
     recarga();
     //weatherReport(39.573050699999996,-0.32989759999999996);
   },900000);//Set interval para que se refresque cada 15 min
@@ -67,8 +72,7 @@ function recarga (){
 
 //----------------------------------------------------------------------------
 //INICIO DE LAS FUNCIONES para el tiempo
-function weatherReport(lat,long) {
-
+function weatherReport(lat,long,valor) {
 	var apiKey       = '328d9ebcd87e9efeb1df8eaecc146730',
 			url          = 'https://api.darksky.net/forecast/',
 			lati         = lat,
@@ -150,8 +154,16 @@ function weatherReport(lat,long) {
   				'</div></div><div class="back card">'
   		);
 		}
+    if(valor == 1){
+    delete icons;
     skycons(); //Añadimos los iconos
-	});
+	}else if (valor == 0) {
+
+      delete icons;
+      //skycons_static();
+  }
+
+  });
 }
 
 function skycons() {
@@ -182,6 +194,36 @@ function skycons() {
     }
 
     icons.play();  // animate the icons
+
+}
+function skycons_static() {
+        var  icons = new Skycons({
+        //"color" : "#190f707",
+         "color" : "#FFFFFF"
+
+       });
+        var i;
+        var  list  = [ // listing of all possible icons
+                "clear-day",
+                "clear-night",
+                "partly-cloudy-day",
+                "partly-cloudy-night",
+                "cloudy",
+                "rain",
+                "sleet",
+                "snow",
+                "wind",
+                "fog"
+            ];
+    for(i = list.length; i--;) {
+        var weatherType = list[i],
+                elements    = document.getElementsByClassName( weatherType );
+        for (e = elements.length; e--;) {
+            icons.set(elements[e], weatherType);
+        }
+    }
+
+  //  icons.play();  // animate the icons
 
 }
 
