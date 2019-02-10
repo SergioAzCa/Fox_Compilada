@@ -5,21 +5,38 @@ var long;
 var allText;
 //METRO VALENCIA
 // LAT LONG : 39.573050699999996 -0.32989759999999996
+var  icons = new Skycons({
+//"color" : "#190f707",
+ "color" : "#FFFFFF"
 
+});
+
+var  list  = [ // listing of all possible icons
+        "clear-day",
+        "clear-night",
+        "partly-cloudy-day",
+        "partly-cloudy-night",
+        "cloudy",
+        "rain",
+        "sleet",
+        "snow",
+        "wind",
+        "fog"
+    ];
 //PETICION PDF
 //http://www.metrovalencia.es/horarios_pdf.php?origen=3&destino=11&fecha=12/11/2017&hini=00:00&hfin=23:59
 
-
- lat,long= lat_long();
-  weatherReport(lat,long,1);
+ //lat,long= lat_long();
+  weatherReport(39.573050699999996,-0.32989759999999996);
   //weatherReport(39.573050699999996,-0.32989759999999996); //CUANDO ESTE LA RASPI ACTIVA DESCOMENTAR ARRIBA
-  google_calendar();
-  //calcularhorario();
+  //google_calendar();
+  calcularhorario();
   recarga();
 
 //----------------------------------------------------------------------------
 //RELOJ DIGITAL
 $(document).ready(function() {
+  console.log("ENTRO")
   // Create two variable with the names of the months and days in an array
   var monthNames = [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
   var dayNames= ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"]
@@ -52,19 +69,17 @@ $(document).ready(function() {
   	$("#hours").html(( hours < 10 ? "0" : "" ) + hours);
   }, 1000);
 });
+
+
 var contador = 0;
 //----------------------------------------------------------------------------
 //FUNCION MEMORIA LIBERADA
 function recarga (){
   var a = setInterval(function(){
-    google_calendar();
-    if(contador % 2 == 0){
-        weatherReport(lat,long,1);
-    }else{
-        weatherReport(lat,long,0);
-    }
+    //google_calendar();
+    weatherReport(39.573050699999996,-0.32989759999999996);
+
     clearInterval(a);
-    contador = contador + 1;
     recarga();
     //weatherReport(39.573050699999996,-0.32989759999999996);
   },900000);//Set interval para que se refresque cada 15 min
@@ -72,7 +87,7 @@ function recarga (){
 
 //----------------------------------------------------------------------------
 //INICIO DE LAS FUNCIONES para el tiempo
-function weatherReport(lat,long,valor) {
+function weatherReport(lat,long) {
 	var apiKey       = '328d9ebcd87e9efeb1df8eaecc146730',
 			url          = 'https://api.darksky.net/forecast/',
 			lati         = lat,
@@ -104,7 +119,8 @@ function weatherReport(lat,long,valor) {
 
 		$("#tiempo").html(
 					'<div class="shade-'+ skicons +'"><div class="card-container"><div><div class="front card"></div>' +
-					"<div class='graphic_tiempo'><canvas class=" + skicons + "></canvas></div>" +
+          "<div class='graphic_tiempo'><canvas class=" + skicons + "></canvas></div>" +
+					"<div ><b>Resumen</b>: <br>" + summary + "</div>" +
           "<div style='float:left;margin-left:5px;' ><img src='./svg/thermometer_generico.svg' height='30'/> "  + temp + "</div>" +
 					"<div ><img src='./svg/rain.svg' height='30'/>  "  + probabilidad_lluvia + "%</div>" +
 					"<div ><b>Temperatura aparente</b>: " + aparente_temp + "</div>" +
@@ -113,8 +129,8 @@ function weatherReport(lat,long,valor) {
           "<div><b>------Datos adicionales------</b></div>" +
 					"<div ><b>Rocio</b>: " + rocio + "</div>" +
 					"<div style='float:left;margin-left:5px;'><img src='./svg/cloud_azul.svg' height='30'/> " + nubes + "%</div>" +
-	        "<div><img src='./svg/sunblock.svg' height='30'/> " + uv + "</div>" +
-          "<div ><img src='./svg/meter.svg' height='30'/> " + presion + " Hectopascals</div>" +
+	        //"<div><img src='./svg/sunblock.svg' height='30'/> " + uv + "</div>" +
+          //"<div ><img src='./svg/meter.svg' height='30'/> " + presion + " Hectopascals</div>" +
 					"<div ><b>Visibilidad</b>: " + visibilidad + " Km</div>" +
 					//"<div><b>Ozono</b>: " + ozono + "</div>" +
 					'</div></div><div class="back card">'
@@ -154,37 +170,13 @@ function weatherReport(lat,long,valor) {
   				'</div></div><div class="back card">'
   		);
 		}
-    if(valor == 1){
-    delete icons;
     skycons(); //Añadimos los iconos
-	}else if (valor == 0) {
-
-      delete icons;
-      //skycons_static();
-  }
-
   });
 }
 
 function skycons() {
-        var  icons = new Skycons({
-        //"color" : "#190f707",
-         "color" : "#FFFFFF"
-
-       });
-        var i;
-        var  list  = [ // listing of all possible icons
-                "clear-day",
-                "clear-night",
-                "partly-cloudy-day",
-                "partly-cloudy-night",
-                "cloudy",
-                "rain",
-                "sleet",
-                "snow",
-                "wind",
-                "fog"
-            ];
+    var i;
+    icons.list=[];
     for(i = list.length; i--;) {
         var weatherType = list[i],
                 elements    = document.getElementsByClassName( weatherType );
@@ -192,40 +184,10 @@ function skycons() {
             icons.set(elements[e], weatherType);
         }
     }
-
+    //console.log(icons)
     icons.play();  // animate the icons
-
 }
-function skycons_static() {
-        var  icons = new Skycons({
-        //"color" : "#190f707",
-         "color" : "#FFFFFF"
 
-       });
-        var i;
-        var  list  = [ // listing of all possible icons
-                "clear-day",
-                "clear-night",
-                "partly-cloudy-day",
-                "partly-cloudy-night",
-                "cloudy",
-                "rain",
-                "sleet",
-                "snow",
-                "wind",
-                "fog"
-            ];
-    for(i = list.length; i--;) {
-        var weatherType = list[i],
-                elements    = document.getElementsByClassName( weatherType );
-        for (e = elements.length; e--;) {
-            icons.set(elements[e], weatherType);
-        }
-    }
-
-  //  icons.play();  // animate the icons
-
-}
 
 
 
@@ -255,10 +217,10 @@ function google_calendar(){
 		var dia_siguiente = day + 7;
 	}
 	fecha_fin = year + "-" + month + "-" + dia_siguiente;
-	//request = "https://www.googleapis.com/calendar/v3/calendars/m50vfeum9fh2k4464qcc72j014%40group.calendar.google.com/events?timeMax="+String(fecha_fin)+"T10%3A00%3A00-07%3A00&timeMin="+String(fecha_ini)+"T10%3A00%3A00-07%3A00&key=AIzaSyDFNYWM5Xk33euOTjB88ztXM0ryYktJQLU";
+	//request = "https://www.googleapis.com/calendar/v3/calendars/l6h8u0cmbhqijjmsttq5jcnj7o@group.calendar.google.com/events?timeMax="+String(fecha_fin)+"T10%3A00%3A00-07%3A00&timeMin="+String(fecha_ini)+"T10%3A00%3A00-07%3A00&key=AIzaSyDFNYWM5Xk33euOTjB88ztXM0ryYktJQLU";
 	//console.log(request)
 	//CALENDARIO CONJUNTO
-	$.getJSON("https://www.googleapis.com/calendar/v3/calendars/m50vfeum9fh2k4464qcc72j014%40group.calendar.google.com/events?timeMax="+String(fecha_fin)+"T10%3A00%3A00-07%3A00&timeMin="+String(fecha_ini)+"T10%3A00%3A00-07%3A00&key=AIzaSyDFNYWM5Xk33euOTjB88ztXM0ryYktJQLU", function(calendar){
+	$.getJSON("https://www.googleapis.com/calendar/v3/calendars/l6h8u0cmbhqijjmsttq5jcnj7o@group.calendar.google.com/events?timeMax="+String(fecha_fin)+"T10%3A00%3A00-07%3A00&timeMin="+String(fecha_ini)+"T10%3A00%3A00-07%3A00&key=AIzaSyDFNYWM5Xk33euOTjB88ztXM0ryYktJQLU", function(calendar){
 	   //console.log(calendar)
 	   for(var i = 0, l = calendar.items.length; i < l ; i++) {
 
